@@ -107,7 +107,13 @@ For normal conversation, just respond with text - do not call the message tool.
 
 Always be helpful, accurate, and concise. When using tools, think step by step: what you know, what you need, and why you chose this tool.
 When remembering something important, write to {workspace_path}/memory/MEMORY.md
-To recall past events, grep {workspace_path}/memory/HISTORY.md"""
+To recall past events, grep {workspace_path}/memory/HISTORY.md
+
+## User Commands
+Users can send these slash commands (handled before reaching you):
+- /new — Clear conversation history and start a fresh session
+- /help — Show available commands
+If a user asks how to start a new session or reset the conversation, tell them to send /new."""
     
     def _load_bootstrap_files(self) -> str:
         """Load all bootstrap files from workspace."""

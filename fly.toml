@@ -1,0 +1,21 @@
+# fly.toml — Nanobot on Fly.io
+# Docs: https://fly.io/docs/reference/configuration/
+
+app = "nanobot-ryx"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "Dockerfile"
+
+# Run start.sh: launches WhatsApp bridge (Node.js) + nanobot gateway (Python)
+[processes]
+  app = "/bin/sh /app/start.sh"
+
+# No HTTP services — disable auto-stop so the worker stays alive
+[machines]
+  auto_stop = false
+
+# Persistent volume for ~/.nanobot (config, workspace, whatsapp-auth, logs)
+[mounts]
+  source = "nanobot_data"
+  destination = "/root/.nanobot"

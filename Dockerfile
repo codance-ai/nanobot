@@ -33,8 +33,10 @@ WORKDIR /app
 # Create config directory
 RUN mkdir -p /root/.nanobot
 
+# Copy Fly.io startup script (ignored if not present)
+COPY start.sh /app/start.sh
+
 # Gateway default port
 EXPOSE 18790
 
-ENTRYPOINT ["nanobot"]
-CMD ["status"]
+CMD ["nanobot", "status"]

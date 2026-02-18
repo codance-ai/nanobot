@@ -1,5 +1,6 @@
 #!/bin/sh
 # Start WhatsApp bridge (Node.js) in the background, then run nanobot gateway.
+# Gateway auto-restarts on exit (e.g. when nanobot restarts itself via exec tool).
 
 CONFIG="/root/.nanobot/config.json"
 
@@ -21,9 +22,10 @@ BRIDGE_PID=$!
 # Give the bridge a moment to start
 sleep 2
 
-# Start the nanobot gateway
-echo "Starting nanobot gateway..."
-cd /app && nanobot gateway
-
-# If gateway exits, also stop the bridge
-kill $BRIDGE_PID 2>/dev/null
+# Auto-restart gateway on exit
+while true; do
+  echo "Starting nanobot gateway..."
+  cd /app && nanobot gateway
+  echo "Gateway exited. Restarting in 3 seconds..."
+  sleep 3
+done

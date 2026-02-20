@@ -14,13 +14,15 @@ if [ ! -f "$CONFIG" ]; then
   echo "Config found! Starting..."
 fi
 
-# Start the WhatsApp bridge
-echo "Starting WhatsApp bridge..."
-cd /app/bridge && node dist/index.js &
-BRIDGE_PID=$!
-
-# Give the bridge a moment to start
-sleep 2
+# Start the WhatsApp bridge only if enabled in config
+if python3 -c "import json; c=json.load(open('$CONFIG')); exit(0 if c.get('channels',{}).get('whatsapp',{}).get('enabled') else 1)" 2>/dev/null; then
+  echo "Starting WhatsApp bridge..."
+  cd /app/bridge && node dist/index.js &
+  BRIDGE_PID=$!
+  sleep 2
+else
+  echo "WhatsApp bridge not enabled, skipping."
+fi
 
 # Auto-restart gateway on exit
 while true; do

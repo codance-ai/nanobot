@@ -4,6 +4,15 @@
 
 CONFIG="/root/.nanobot/config.json"
 
+# Restore OAuth token from persistent volume if present
+OAUTH_SRC="/root/.nanobot/oauth-codex.json"
+OAUTH_DST="/root/.local/share/oauth-cli-kit/auth/codex.json"
+if [ -f "$OAUTH_SRC" ]; then
+  mkdir -p "$(dirname "$OAUTH_DST")"
+  cp "$OAUTH_SRC" "$OAUTH_DST"
+  echo "OAuth token restored from persistent volume."
+fi
+
 # Wait for config to be created (allows SSH in to write it)
 if [ ! -f "$CONFIG" ]; then
   echo "No config.json found. Waiting for config at $CONFIG ..."
